@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>NFL Takes 2026 🏈</title>
+<title>Fellas NFL Survey 2026 🏈</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -936,6 +936,8 @@ function finishSurvey() {
 
 // ──────────────────────────────────────────────
 // GOOGLE SHEETS SUBMIT
+// FIX: Removed mode:'no-cors' which was silently stripping the Content-Type
+// header and preventing Apps Script from parsing the JSON body.
 // ──────────────────────────────────────────────
 async function submitToSheets() {
   const statusEl = document.getElementById('submitStatus');
@@ -962,12 +964,14 @@ async function submitToSheets() {
       }))
     };
 
-    await fetch(APPS_SCRIPT_URL, {
+    const res = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
+
+    const json = await res.json();
+    if (json.status !== 'ok') throw new Error(json.message || 'Unknown error from server');
 
     statusEl.className = 'done-status success';
     statusEl.textContent = '✅ Takes submitted!';
@@ -976,6 +980,7 @@ async function submitToSheets() {
   } catch (err) {
     statusEl.className = 'done-status error';
     statusEl.textContent = '❌ Couldn\'t reach the sheet — check your connection. Your results are saved locally.';
+    console.error('Sheets submit error:', err);
   }
 }
 
