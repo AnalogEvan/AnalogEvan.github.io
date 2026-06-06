@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Fellas NFL Survey 2026 🏈</title>
+<title>NFL Takes 2026 🏈</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -964,14 +964,18 @@ async function submitToSheets() {
       }))
     };
 
-    const res = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
+    // Apps Script blocks preflight CORS on application/json POSTs, so we
+    // encode the payload as a form field and use no-cors. Apps Script reads
+    // it from e.parameter.payload. The fetch resolves successfully (opaque
+    // response) so we treat reaching this line as a successful submission.
+    const form = new FormData();
+    form.append('payload', JSON.stringify(payload));
 
-    const json = await res.json();
-    if (json.status !== 'ok') throw new Error(json.message || 'Unknown error from server');
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: form
+    });
 
     statusEl.className = 'done-status success';
     statusEl.textContent = '✅ Takes submitted!';
