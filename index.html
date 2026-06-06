@@ -940,7 +940,7 @@ function finishSurvey() {
 async function submitToSheets() {
   const statusEl = document.getElementById('submitStatus');
 
-  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbyVUcnKYK4z6ruy2WxokIkfHEW42GTILS2fvfeb1Hgd1cELEdmroRDRI9aCn2pOlWk/exec') {
     statusEl.className = 'done-status error';
     statusEl.textContent = '⚠️ No Google Sheets URL configured yet — see README.md for setup steps.';
     return;
@@ -970,7 +970,7 @@ async function submitToSheets() {
     });
 
     statusEl.className = 'done-status success';
-    statusEl.textContent = '✅ Takes submitted! Check the group sheet to see how you rank.';
+    statusEl.textContent = '✅ Takes submitted!';
     showToast('Submitted to Google Sheets! 🏆', true);
 
   } catch (err) {
