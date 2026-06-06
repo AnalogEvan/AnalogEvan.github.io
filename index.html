@@ -13,8 +13,9 @@
     --surface: #13131a;
     --surface2: #1c1c28;
     --border: rgba(255,255,255,0.08);
-    --green: #00e676;
-    --green-dim: rgba(0,230,118,0.12);
+    --accent: #00e676;
+    --accent-dim: rgba(0,230,118,0.12);
+    --accent-rgb: 0,230,118;
     --red: #ff4757;
     --gold: #ffd32a;
     --text: #f0f0f8;
@@ -25,6 +26,13 @@
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
   html { scroll-behavior: smooth; }
+
+  /* Smooth team color transitions */
+  .team-card, .next-btn, .team-division, .progress-inner,
+  .slider::-webkit-slider-thumb, .back-btn, .rating-section {
+    transition: background 0.4s ease, border-color 0.4s ease,
+                box-shadow 0.4s ease, color 0.4s ease;
+  }
 
   body {
     background: var(--bg);
@@ -55,10 +63,10 @@
   }
   #progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--green), var(--gold));
+    background: linear-gradient(90deg, var(--accent), var(--gold));
     transition: width 0.4s cubic-bezier(.4,0,.2,1);
     width: 0%;
-    box-shadow: 0 0 12px var(--green);
+    box-shadow: 0 0 12px var(--accent);
   }
 
   /* ── SCREENS ── */
@@ -80,7 +88,7 @@
     top: -200px; left: 50%;
     transform: translateX(-50%);
     width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(0,230,118,0.08) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(var(--accent-rgb),0.08) 0%, transparent 70%);
     pointer-events: none;
   }
 
@@ -89,7 +97,7 @@
     font-size: clamp(72px, 20vw, 120px);
     line-height: 0.9;
     letter-spacing: 2px;
-    background: linear-gradient(135deg, #fff 0%, var(--green) 100%);
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -126,7 +134,7 @@
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--green);
+    color: var(--accent);
     margin-bottom: 10px;
   }
 
@@ -143,59 +151,10 @@
     transition: border-color 0.2s, box-shadow 0.2s;
   }
   .name-input:focus {
-    border-color: var(--green);
-    box-shadow: 0 0 0 4px var(--green-dim);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-dim);
   }
   .name-input::placeholder { color: var(--muted); }
-
-  .mode-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    width: 100%;
-    max-width: 360px;
-    margin: 0 auto;
-  }
-
-  .mode-card {
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 22px 24px;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.2s ease;
-    position: relative;
-    overflow: hidden;
-  }
-  .mode-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, var(--green-dim), transparent);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .mode-card:hover::before, .mode-card:active::before { opacity: 1; }
-  .mode-card:hover { border-color: var(--green); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,230,118,0.1); }
-  .mode-card:active { transform: scale(0.98); }
-
-  .mode-icon { font-size: 28px; margin-bottom: 8px; display: block; }
-  .mode-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 1px; color: #fff; margin-bottom: 4px; }
-  .mode-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
-  .mode-badge {
-    position: absolute;
-    top: 14px; right: 14px;
-    background: var(--green-dim);
-    border: 1px solid var(--green);
-    color: var(--green);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 20px;
-  }
 
   /* ── SURVEY ── */
   #survey { padding: 20px 20px 40px; }
@@ -220,7 +179,7 @@
     flex-shrink: 0;
     transition: all 0.2s;
   }
-  .back-btn:hover { border-color: var(--green); }
+  .back-btn:hover { border-color: var(--accent); }
 
   .progress-info {
     flex: 1;
@@ -241,14 +200,14 @@
   }
   .progress-inner {
     height: 100%;
-    background: linear-gradient(90deg, var(--green), var(--gold));
+    background: linear-gradient(90deg, var(--accent), var(--gold));
     border-radius: 10px;
     transition: width 0.4s cubic-bezier(.4,0,.2,1);
     width: 0%;
   }
 
   .team-card {
-    background: var(--surface);
+    background: var(--team-card-bg, var(--surface));
     border: 1.5px solid var(--border);
     border-radius: 24px;
     padding: 32px 24px 28px;
@@ -269,7 +228,7 @@
     font-weight: 700;
     letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: var(--green);
+    color: var(--accent);
     margin-bottom: 20px;
   }
 
@@ -356,24 +315,24 @@
     -webkit-appearance: none;
     width: 28px; height: 28px;
     border-radius: 50%;
-    background: var(--green);
+    background: var(--accent);
     cursor: pointer;
-    box-shadow: 0 0 0 4px var(--green-dim), 0 4px 12px rgba(0,230,118,0.4);
+    box-shadow: 0 0 0 4px var(--accent-dim), 0 4px 12px rgba(var(--accent-rgb),0.4);
     transition: transform 0.1s, box-shadow 0.1s;
   }
 
   .slider::-webkit-slider-thumb:active {
     transform: scale(1.2);
-    box-shadow: 0 0 0 8px var(--green-dim), 0 4px 20px rgba(0,230,118,0.5);
+    box-shadow: 0 0 0 8px var(--accent-dim), 0 4px 20px rgba(var(--accent-rgb),0.5);
   }
 
   .slider::-moz-range-thumb {
     width: 28px; height: 28px;
     border-radius: 50%;
-    background: var(--green);
+    background: var(--accent);
     cursor: pointer;
     border: none;
-    box-shadow: 0 0 0 4px var(--green-dim);
+    box-shadow: 0 0 0 4px var(--accent-dim);
   }
 
   .slider-labels {
@@ -388,84 +347,16 @@
     font-family: 'Bebas Neue', sans-serif;
     font-size: 32px;
     text-align: center;
-    color: var(--green);
+    color: var(--accent);
     line-height: 1;
     margin-bottom: 4px;
   }
 
-  /* ── SICKO GRID ── */
-  .sicko-container { position: relative; }
-
-  .axis-label-y {
-    position: absolute;
-    left: -8px; top: 50%;
-    transform: translateX(-100%) translateY(-50%) rotate(-90deg);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    white-space: nowrap;
-    transform-origin: center;
-  }
-
-  .axis-label-x {
-    text-align: center;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-top: 10px;
-  }
-
-  .sicko-grid {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    gap: 4px;
-    padding: 0 2px;
-  }
-
-  .grid-cell {
-    aspect-ratio: 1;
-    border-radius: 6px;
-    border: 1.5px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 8px;
-    font-weight: 700;
-    color: var(--muted);
-    transition: all 0.15s ease;
-    position: relative;
-    overflow: hidden;
-    background: var(--surface2);
-  }
-
-  .grid-cell:hover, .grid-cell:active {
-    border-color: var(--green);
-    background: var(--green-dim);
-    color: var(--green);
-    transform: scale(0.95);
-  }
-
-  .grid-cell .cell-emoji { font-size: 16px; line-height: 1; }
-
-  .grid-cell.selected {
-    background: var(--green-dim) !important;
-    border-color: var(--green) !important;
-    color: var(--green) !important;
-    box-shadow: 0 0 12px rgba(0,230,118,0.25);
-    transform: scale(0.9);
-  }
-
-  /* ── NEXT BUTTON ── */
+  /* ── BUTTONS ── */
   .next-btn {
     width: 100%;
-    background: var(--green);
-    color: #000;
+    background: var(--accent);
+    color: #0a0a0f;
     border: none;
     border-radius: 16px;
     font-family: 'Bebas Neue', sans-serif;
@@ -478,15 +369,23 @@
     opacity: 0.4;
     pointer-events: none;
   }
+  
+  .start-btn {
+    opacity: 1;
+    pointer-events: all;
+    max-width: 360px;
+    margin: 0 auto;
+    display: block;
+  }
 
   .next-btn.ready {
     opacity: 1;
     pointer-events: all;
-    box-shadow: 0 8px 32px rgba(0,230,118,0.3);
+    box-shadow: 0 8px 32px rgba(var(--accent-rgb),0.3);
   }
 
-  .next-btn.ready:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,230,118,0.4); }
-  .next-btn.ready:active { transform: scale(0.98); }
+  .next-btn.ready:hover, .start-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(var(--accent-rgb),0.4); }
+  .next-btn.ready:active, .start-btn:active { transform: scale(0.98); }
 
   /* ── DONE SCREEN ── */
   #done {
@@ -503,7 +402,7 @@
     font-family: 'Bebas Neue', sans-serif;
     font-size: 56px;
     letter-spacing: 2px;
-    background: linear-gradient(135deg, #fff, var(--green));
+    background: linear-gradient(135deg, #fff, var(--accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -544,7 +443,7 @@
   .stat-value {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 36px;
-    color: var(--green);
+    color: var(--accent);
   }
 
   .done-status {
@@ -561,15 +460,15 @@
   }
 
   .done-status.submitting {
-    background: rgba(0,230,118,0.06);
-    border-color: var(--green);
+    background: rgba(var(--accent-rgb),0.06);
+    border-color: var(--accent);
     color: var(--muted);
   }
 
   .done-status.success {
-    background: rgba(0,230,118,0.08);
-    border-color: var(--green);
-    color: var(--green);
+    background: rgba(var(--accent-rgb),0.08);
+    border-color: var(--accent);
+    color: var(--accent);
   }
 
   .done-status.error {
@@ -590,7 +489,7 @@
     cursor: pointer;
     transition: all 0.2s;
   }
-  .restart-btn:hover { border-color: var(--green); }
+  .restart-btn:hover { border-color: var(--accent); }
 
   /* ── TOAST ── */
   .toast {
@@ -610,18 +509,15 @@
     text-align: center;
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
-  .toast.green { border-color: var(--green); color: var(--green); }
+  .toast.green { border-color: var(--accent); color: var(--accent); }
 
   /* ── RESPONSIVE TWEAKS ── */
   @media (max-width: 380px) {
     .team-name { font-size: 38px; }
-    .grid-cell .cell-emoji { font-size: 14px; }
   }
 
   @media (min-width: 600px) {
     #survey { max-width: 480px; margin: 0 auto; padding-top: 32px; }
-    #home .mode-cards { max-width: 420px; }
-    .sicko-grid { gap: 10px; }
   }
 </style>
 </head>
@@ -642,19 +538,7 @@
     <input class="name-input" id="nameField" type="text" placeholder="e.g. Big Mike" maxlength="40" autocomplete="off">
   </div>
 
-  <div class="mode-cards">
-    <div class="mode-card" onclick="startMode('casual')">
-      <span class="mode-icon">🏈</span>
-      <div class="mode-title">Casual Mode</div>
-      <div class="mode-desc">Rate each team separately on Quality and Likeability with a simple slider. Easiest.</div>
-      <div class="mode-badge">Recommended</div>
-    </div>
-    <div class="mode-card" onclick="startMode('advanced')">
-      <span class="mode-icon">🧠</span>
-      <div class="mode-title">Advanced Mode</div>
-      <div class="mode-desc">Place each team on a 5×5 Quality vs. Likeability grid — both axes in one tap. For the true heads.</div>
-    </div>
-  </div>
+  <button class="next-btn start-btn" onclick="startSurvey()">START RATING →</button>
 </div>
 
 <!-- ══════════════ SURVEY ══════════════ -->
@@ -693,7 +577,7 @@
     <div class="team-abbr" id="teamAbbr"></div>
   </div>
 
-  <!-- CASUAL MODE RATINGS -->
+  <!-- RATINGS -->
   <div id="casualRatings">
     <div class="rating-section">
       <div class="rating-label">⚡ Quality — <span id="qualLabel">how good are they?</span></div>
@@ -709,30 +593,16 @@
     </div>
 
     <div class="rating-section">
-      <div class="rating-label">❤️ Likeability — <span id="likeLabel">do you fw them?</span></div>
+      <div class="rating-label">❤️ Likeability — <span id="likeLabel">Do you like them?</span></div>
       <div class="slider-value" id="likeValue">—</div>
       <div class="slider-wrap">
         <input class="slider" id="likeSlider" type="range" min="1" max="10" step="1" value="5"
           oninput="onSlider('like',this.value)">
       </div>
       <div class="slider-labels">
-        <span>They're dead to me 💀</span>
-        <span>Ride or die 🙌</span>
+        <span>Hate Them 💀</span>
+        <span>Favorite</span>
       </div>
-    </div>
-  </div>
-
-  <!-- SICKO MODE GRID -->
-  <div id="sickoRatings" style="display:none">
-    <div class="rating-section">
-      <div class="rating-label">Tap to place this team</div>
-      <div style="display:flex;align-items:center;gap:8px;">
-        <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);flex-shrink:0;">Quality ↑</div>
-        <div style="flex:1">
-          <div class="sicko-grid" id="sickoGrid"></div>
-        </div>
-      </div>
-      <div class="axis-label-x">Likeability →</div>
     </div>
   </div>
 
@@ -778,8 +648,42 @@
 const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
 
 // ──────────────────────────────────────────────
-// DATA
+// TEAM COLORS - Updated with high-contrast variants for dark-mode
 // ──────────────────────────────────────────────
+const TEAM_COLORS = {
+  BUF: '#4B92FF', MIA: '#00E6D6',
+  NYJ: '#12D67A', NE:  '#FF4B4B',
+  BAL: '#9556FF', CIN: '#FF6A00',
+  CLE: '#FF6A00', PIT: '#FFCC00',
+  HOU: '#FF4B4B', IND: '#4B92FF',
+  JAX: '#00D6E6', TEN: '#6FB6FF',
+  KC:  '#FF4B4B', DEN: '#FF6A00',
+  LV:  '#D1D5D8', LAC: '#00BFFF',
+  PHI: '#00D6A4', DAL: '#6FAAFF',
+  NYG: '#4B7BFF', WAS: '#FFCC00',
+  DET: '#00BFFF', GB:  '#FFCC00',
+  CHI: '#FF6A00', MIN: '#B37FFF',
+  TB:  '#FF4B4B', ATL: '#FF4B4B',
+  NO:  '#E6C875', CAR: '#00BFFF',
+  SF:  '#FF4B4B', LAR: '#FFCC00',
+  SEA: '#69BE28', ARI: '#FF4B4B',
+};
+
+function applyTeamColors(abbr) {
+  const primary = TEAM_COLORS[abbr] || '#00e676';
+  const toRgb = hex => {
+    const r = parseInt(hex.slice(1,3),16);
+    const g = parseInt(hex.slice(3,5),16);
+    const b = parseInt(hex.slice(5,7),16);
+    return `${r},${g},${b}`;
+  };
+  const root = document.documentElement;
+  root.style.setProperty('--accent', primary);
+  root.style.setProperty('--accent-rgb', toRgb(primary));
+  root.style.setProperty('--accent-dim', `rgba(${toRgb(primary)},0.15)`);
+  root.style.setProperty('--team-card-bg', `linear-gradient(160deg, rgba(${toRgb(primary)},0.12) 0%, var(--surface) 60%)`);
+}
+
 const DIVISIONS = {
   'AFC East':  [['BUF','Bills'],['MIA','Dolphins'],['NYJ','Jets'],['NE','Patriots']],
   'AFC North': [['BAL','Ravens'],['CIN','Bengals'],['CLE','Browns'],['PIT','Steelers']],
@@ -791,20 +695,18 @@ const DIVISIONS = {
   'NFC West':  [['SF','49ers'],['LAR','Rams'],['SEA','Seahawks'],['ARI','Cardinals']]
 };
 
-const QUAL_LABELS = ['','Dumpster Fire 🗑️','Bad','Below Average','Mediocre','Average','Decent','Contender','Legit Good','Elite','Super Bowl Bound 🐐'];
-const LIKE_LABELS = ['','Dead to Me ☠️','Can\'t Stand \'Em','Nah','Indifferent','Whatever','I fw them','Solid','Like \'Em A Lot','Almost Ride or Die','Ride or Die 🙌'];
+const QUAL_LABELS = ['','As Bad As The 1944 Cardinals','Bad','Below Average','Mediocre','Average','Decent','Contender','Legit Good','Elite','Super Bowl Bound 🐐'];
+const LIKE_LABELS = ['','Dead to Me','Can\'t Stand \'Em','Nah','Indifferent','Whatever','I like them','Solid','Like \'Em A Lot','Almost My Favorite','My Favorite'];
 
 // ──────────────────────────────────────────────
 // STATE
 // ──────────────────────────────────────────────
-let mode = 'casual';
 let teams = [];
 let idx = 0;
 let results = [];
 let submitterName = '';
 let qualVal = null;
 let likeVal = null;
-let sickoSelected = null; // {q, l}
 let qualTouched = false;
 let likeTouched = false;
 
@@ -818,29 +720,9 @@ function buildTeamList() {
       teams.push({ division: div, abbr, name });
     }
   }
-  // Shuffle for variety
   for (let i = teams.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [teams[i], teams[j]] = [teams[j], teams[i]];
-  }
-}
-
-function buildSickoGrid() {
-  const grid = document.getElementById('sickoGrid');
-  grid.innerHTML = '';
-  for (let q = 10; q >= 1; q--) {
-    for (let l = 1; l <= 10; l++) {
-      const cell = document.createElement('div');
-      cell.className = 'grid-cell';
-      cell.dataset.q = q;
-      cell.dataset.l = l;
-      // Color-code zones: top-right=gold, bottom-left=red, diagonal=green tint
-      if (q >= 8 && l >= 8) cell.style.borderColor = 'rgba(255,211,42,0.25)';
-      else if (q <= 3 && l <= 3) cell.style.borderColor = 'rgba(255,71,87,0.2)';
-      cell.title = `Quality: ${q}, Like: ${l}`;
-      cell.onclick = () => selectSickoCell(q, l, cell);
-      grid.appendChild(cell);
-    }
   }
 }
 
@@ -853,7 +735,7 @@ function showScreen(id) {
   window.scrollTo(0, 0);
 }
 
-function startMode(m) {
+function startSurvey() {
   const name = document.getElementById('nameField').value.trim();
   if (!name) {
     showToast('Enter your name first 👆', false);
@@ -861,15 +743,9 @@ function startMode(m) {
     return;
   }
   submitterName = name;
-  mode = m;
   buildTeamList();
   idx = 0;
   results = [];
-
-  if (m === 'advanced') buildSickoGrid();
-
-  document.getElementById('casualRatings').style.display = m === 'casual' ? 'block' : 'none';
-  document.getElementById('sickoRatings').style.display = m === 'advanced' ? 'block' : 'none';
 
   resetInputs();
   renderTeam();
@@ -912,22 +788,20 @@ function renderTeam(prefill = null) {
   const t = teams[idx];
   const pct = Math.round((idx / teams.length) * 100);
 
-  // Update progress
   document.getElementById('progressLabel').textContent = `Team ${idx + 1} of ${teams.length}`;
   document.getElementById('progressInner').style.width = pct + '%';
   document.getElementById('progress-fill').style.width = pct + '%';
 
-  // Prev button — dim on first team
   const prevBtn = document.getElementById('prevBtn');
   prevBtn.style.opacity = idx === 0 ? '0.3' : '1';
   prevBtn.style.pointerEvents = idx === 0 ? 'none' : 'all';
 
-  // Team info
+  applyTeamColors(t.abbr);
+
   document.getElementById('teamDivision').textContent = t.division;
   document.getElementById('teamName').textContent = t.name;
   document.getElementById('teamAbbr').textContent = t.abbr;
 
-  // Logo
   const logoEl = document.getElementById('teamLogo');
   const fallbackEl = document.getElementById('teamLogoFallback');
   logoEl.style.display = 'block';
@@ -935,7 +809,6 @@ function renderTeam(prefill = null) {
   fallbackEl.textContent = t.abbr;
   logoEl.src = `logos/${t.abbr}.svg`;
 
-  // Reset card animation
   const card = document.getElementById('teamCard');
   card.style.animation = 'none';
   card.offsetHeight;
@@ -953,18 +826,13 @@ function resetInputs() {
   likeVal = null;
   qualTouched = false;
   likeTouched = false;
-  sickoSelected = null;
 
-  // Reset sliders visually (don't set value so user must interact)
   document.getElementById("qualSlider").value = 5;
   document.getElementById("likeSlider").value = 5;
   document.getElementById('qualValue').textContent = '—';
   document.getElementById('likeValue').textContent = '—';
   document.getElementById('qualLabel').textContent = 'how good are they?';
   document.getElementById('likeLabel').textContent = 'do you fw them?';
-
-  // Deselect grid cells
-  document.querySelectorAll('.grid-cell').forEach(c => c.classList.remove('selected'));
 
   updateNextBtn();
 }
@@ -974,29 +842,16 @@ function restoreInputs(prev) {
   likeVal = prev.likeability;
   qualTouched = true;
   likeTouched = true;
-  sickoSelected = null;
 
-  if (mode === 'casual') {
-    document.getElementById('qualSlider').value = prev.quality;
-    document.getElementById('likeSlider').value = prev.likeability;
-    document.getElementById('qualValue').textContent = prev.quality;
-    document.getElementById('likeValue').textContent = prev.likeability;
-    document.getElementById('qualLabel').textContent = QUAL_LABELS[prev.quality] || '';
-    document.getElementById('likeLabel').textContent = LIKE_LABELS[prev.likeability] || '';
-  } else {
-    // Re-select the matching grid cell
-    document.querySelectorAll('.grid-cell').forEach(c => {
-      c.classList.remove('selected');
-      if (parseInt(c.dataset.q) === prev.quality && parseInt(c.dataset.l) === prev.likeability) {
-        c.classList.add('selected');
-        sickoSelected = { q: prev.quality, l: prev.likeability };
-      }
-    });
-  }
+  document.getElementById('qualSlider').value = prev.quality;
+  document.getElementById('likeSlider').value = prev.likeability;
+  document.getElementById('qualValue').textContent = prev.quality;
+  document.getElementById('likeValue').textContent = prev.likeability;
+  document.getElementById('qualLabel').textContent = QUAL_LABELS[prev.quality] || '';
+  document.getElementById('likeLabel').textContent = LIKE_LABELS[prev.likeability] || '';
 
   updateNextBtn();
 }
-
 
 function onSlider(type, val) {
   val = parseInt(val);
@@ -1014,19 +869,9 @@ function onSlider(type, val) {
   updateNextBtn();
 }
 
-function selectSickoCell(q, l, cell) {
-  document.querySelectorAll('.grid-cell').forEach(c => c.classList.remove('selected'));
-  cell.classList.add('selected');
-  sickoSelected = { q, l };
-  updateNextBtn();
-}
-
 function updateNextBtn() {
   const btn = document.getElementById('nextBtn');
-  let ready = false;
-  if (mode === 'casual') ready = (qualTouched && likeTouched);
-  if (mode === 'advanced') ready = !!sickoSelected;
-  btn.classList.toggle('ready', ready);
+  btn.classList.toggle('ready', qualTouched && likeTouched);
 }
 
 // ──────────────────────────────────────────────
@@ -1034,26 +879,19 @@ function updateNextBtn() {
 // ──────────────────────────────────────────────
 function saveAndNext() {
   const t = teams[idx];
-  let q, l;
 
-  if (mode === 'casual') {
-    if (!qualTouched || !likeTouched) { showToast('Rate both sliders first!', false); return; }
-    q = qualVal;
-    l = likeVal;
-  } else {
-    if (!sickoSelected) { showToast('Tap a grid cell first!', false); return; }
-    q = sickoSelected.q;
-    l = sickoSelected.l;
+  if (!qualTouched || !likeTouched) { 
+    showToast('Rate both sliders first!', false); 
+    return; 
   }
 
   results[idx] = {
     submitter: submitterName,
-    mode,
     division: t.division,
     abbr: t.abbr,
     team: t.name,
-    quality: q,
-    likeability: l,
+    quality: qualVal,
+    likeability: likeVal,
     timestamp: new Date().toISOString()
   };
 
@@ -1064,12 +902,10 @@ function saveAndNext() {
     return;
   }
 
-  // Milestone toasts
   if (idx === 8) showToast('Quarter done! 🏈 Keep it rolling', true);
   if (idx === 16) showToast('Halftime! You\'re crushing it 💪', true);
   if (idx === 24) showToast('Home stretch — 8 left! 🔥', true);
 
-  // If we've already rated this team (going forward over a back-tracked team), restore it
   renderTeam(results[idx] || null);
 }
 
@@ -1077,13 +913,10 @@ function saveAndNext() {
 // FINISH
 // ──────────────────────────────────────────────
 function finishSurvey() {
-  // Filter out any sparse slots (shouldn't happen, but safety net)
   results = results.filter(Boolean);
 
-  // Update top bar
   document.getElementById('progress-fill').style.width = '100%';
 
-  // Compute stats
   const topTeam = [...results].sort((a,b) => (b.quality+b.likeability)-(a.quality+a.likeability))[0];
   const worstTeam = [...results].sort((a,b) => (a.likeability)-(b.likeability))[0];
   const avgQ = (results.reduce((s,r)=>s+r.quality,0)/results.length).toFixed(1);
@@ -1095,7 +928,6 @@ function finishSurvey() {
   document.getElementById('statAvgL').textContent = avgL;
   document.getElementById('doneSubtitle').textContent = `${submitterName}'s 32 teams rated`;
 
-  // Save locally
   try { localStorage.setItem('nflTakes_' + submitterName, JSON.stringify(results)); } catch(e) {}
 
   showScreen('done');
@@ -1120,7 +952,6 @@ async function submitToSheets() {
 
     const payload = {
       submitter: submitterName,
-      mode,
       submitted_at: new Date().toISOString(),
       results: results.map(r => ({
         team: r.team,
@@ -1131,7 +962,6 @@ async function submitToSheets() {
       }))
     };
 
-    // Apps Script requires no-cors for simple POST from GitHub Pages
     await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
       mode: 'no-cors',
@@ -1139,7 +969,6 @@ async function submitToSheets() {
       body: JSON.stringify(payload)
     });
 
-    // With no-cors we can't read the response, so optimistically show success
     statusEl.className = 'done-status success';
     statusEl.textContent = '✅ Takes submitted! Check the group sheet to see how you rank.';
     showToast('Submitted to Google Sheets! 🏆', true);
