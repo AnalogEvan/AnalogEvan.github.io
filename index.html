@@ -1,1108 +1,1164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#0d0d0d">
-<meta property="og:title" content="NFL Takes — Drop Your Rankings">
-<meta property="og:description" content="Place all 32 teams. How good are they? Do you even like them?">
-<title>NFL Takes</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>NFL Takes 2026 🏈</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ── RESET & TOKENS ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-:root {
-  --bg:       #0d0d0d;
-  --s1:       #161616;
-  --s2:       #1e1e1e;
-  --s3:       #272727;
-  --border:   rgba(255,255,255,0.07);
-  --border2:  rgba(255,255,255,0.13);
-  --text:     #f2f2f2;
-  --muted:    #666;
-  --muted2:   #444;
-  --acc:      #d4ff3e;
-  --acc2:     #a8cc1a;
-  --red:      #ff4545;
-  --blue:     #4a9eff;
-  --r:        14px;
-  --rs:       10px;
-}
-html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; }
-button { font-family: inherit; cursor: pointer; }
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1c1c28;
+    --border: rgba(255,255,255,0.08);
+    --green: #00e676;
+    --green-dim: rgba(0,230,118,0.12);
+    --red: #ff4757;
+    --gold: #ffd32a;
+    --text: #f0f0f8;
+    --muted: rgba(240,240,248,0.45);
+    --radius: 18px;
+  }
 
-/* ── SCREENS ── */
-.screen { position: absolute; inset: 0; display: flex; flex-direction: column; }
-.screen.hidden { display: none; }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
-/* ══════════════════════════════════════════════
-   SPLASH
-══════════════════════════════════════════════ */
-#splash {
-  background: var(--bg);
-  align-items: center;
-  justify-content: flex-end;
-  padding-bottom: max(env(safe-area-inset-bottom), 40px);
-  overflow: hidden;
-}
+  html { scroll-behavior: smooth; }
 
-/* big diagonal field texture */
-#splash::before {
-  content: '';
-  position: absolute;
-  top: -60px; left: -40px; right: -40px;
-  height: 58vh;
-  background: var(--s1);
-  border-radius: 0 0 60% 60% / 0 0 40px 40px;
-  border-bottom: 1px solid var(--border2);
-}
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
 
-/* field yard lines */
-#splash::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 58vh;
-  background-image: repeating-linear-gradient(
-    90deg,
-    transparent,
-    transparent calc(10% - 1px),
-    rgba(255,255,255,0.035) calc(10% - 1px),
-    rgba(255,255,255,0.035) 10%
-  );
-  pointer-events: none;
-}
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
 
-.splash-inner {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  padding: 0 28px;
-}
+  /* ── PROGRESS BAR ── */
+  #progress-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--surface);
+    z-index: 100;
+  }
+  #progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), var(--gold));
+    transition: width 0.4s cubic-bezier(.4,0,.2,1);
+    width: 0%;
+    box-shadow: 0 0 12px var(--green);
+  }
 
-.splash-eyebrow {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--acc);
-  margin-bottom: 12px;
-  background: rgba(212,255,62,0.1);
-  padding: 5px 12px;
-  border-radius: 20px;
-  border: 1px solid rgba(212,255,62,0.2);
-}
+  /* ── SCREENS ── */
+  .screen { display: none; min-height: 100dvh; }
+  .screen.active { display: flex; flex-direction: column; }
 
-.splash-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(72px, 22vw, 108px);
-  line-height: .88;
-  text-align: center;
-  color: var(--text);
-  margin-bottom: 8px;
-}
-.splash-title em { color: var(--acc); font-style: normal; }
+  /* ── HOME ── */
+  #home {
+    justify-content: center;
+    align-items: center;
+    padding: 32px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
 
-.splash-sub {
-  font-size: 14px;
-  color: var(--muted);
-  text-align: center;
-  line-height: 1.55;
-  max-width: 260px;
-  margin-bottom: 36px;
-}
+  .home-glow {
+    position: absolute;
+    top: -200px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,230,118,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
 
-.splash-form {
-  width: 100%;
-  max-width: 340px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+  .home-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 20vw, 120px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, #fff 0%, var(--green) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
 
-#name-input {
-  width: 100%;
-  height: 54px;
-  background: var(--s2);
-  border: 1px solid var(--border2);
-  border-radius: var(--rs);
-  color: var(--text);
-  font-size: 16px;
-  font-weight: 500;
-  padding: 0 16px;
-  outline: none;
-  transition: border-color .2s;
-}
-#name-input:focus { border-color: var(--acc); }
-#name-input::placeholder { color: var(--muted2); font-weight: 400; }
+  .home-sub {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 48px;
+  }
 
-#start-btn {
-  height: 54px;
-  background: var(--acc);
-  color: #0d0d0d;
-  border: none;
-  border-radius: var(--rs);
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 24px;
-  letter-spacing: .07em;
-  transition: transform .12s, background .15s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-#start-btn:active { transform: scale(.97); background: var(--acc2); }
+  .home-desc {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 320px;
+    margin: 0 auto 40px;
+  }
 
-.splash-stats {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 32px;
-}
-.splash-stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-}
-.splash-stat-n {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 32px;
-  color: var(--text);
-  line-height: 1;
-}
-.splash-stat-l {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.splash-divider { width: 1px; background: var(--border2); align-self: stretch; }
+  .name-input-wrap {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto 32px;
+    position: relative;
+  }
 
-/* ══════════════════════════════════════════════
-   SURVEY
-══════════════════════════════════════════════ */
-#survey {
-  background: var(--bg);
-}
+  .name-input-wrap label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 10px;
+  }
 
-/* top bar */
-#topbar {
-  padding: max(env(safe-area-inset-top), 12px) 16px 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-  border-bottom: 1px solid var(--border);
-}
-#back-btn {
-  width: 34px; height: 34px;
-  border-radius: 50%;
-  background: var(--s2);
-  border: 1px solid var(--border2);
-  color: var(--text);
-  font-size: 20px;
-  line-height: 1;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.prog-wrap { flex: 1; min-width: 0; }
-.prog-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 6px;
-}
-.prog-label { font-size: 11px; font-weight: 500; color: var(--muted); }
-.prog-frac {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 18px;
-  color: var(--acc);
-}
-.prog-track {
-  height: 3px;
-  background: var(--s3);
-  border-radius: 2px;
-  overflow: hidden;
-}
-.prog-fill {
-  height: 100%;
-  background: var(--acc);
-  border-radius: 2px;
-  transition: width .35s cubic-bezier(.4,0,.2,1);
-}
+  .name-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    padding: 16px 20px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .name-input:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 4px var(--green-dim);
+  }
+  .name-input::placeholder { color: var(--muted); }
 
-/* current team card */
-#team-card {
-  margin: 10px 14px;
-  padding: 12px 14px;
-  background: var(--s1);
-  border: 1px solid var(--border2);
-  border-radius: var(--r);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
-}
-#tlogo {
-  width: 48px; height: 48px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 14px;
-  letter-spacing: .04em;
-  flex-shrink: 0;
-  position: relative;
-  transition: transform .2s;
-}
-#tlogo.just-placed { animation: pop .3s cubic-bezier(.175,.885,.32,1.6) forwards; }
-@keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.25)} 100%{transform:scale(1)} }
-#tlogo.placed-ring::after {
-  content:'';
-  position:absolute; inset:-4px;
-  border-radius:50%;
-  border: 2px solid var(--acc);
-  animation: ring-out .5s ease forwards;
-}
-@keyframes ring-out { from{opacity:1;transform:scale(1)} to{opacity:0;transform:scale(1.5)} }
+  .mode-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+  }
 
-.tinfo { flex: 1; min-width: 0; }
-.tname {
-  font-size: 17px;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.tconf { font-size: 11px; color: var(--muted); margin-top: 2px; font-weight: 500; }
-.tstatus {
-  font-size: 11px;
-  font-weight: 600;
-  margin-top: 5px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.tstatus.placed { color: var(--acc); }
-.tstatus.pending { color: var(--muted); }
+  .mode-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .mode-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--green-dim), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .mode-card:hover::before, .mode-card:active::before { opacity: 1; }
+  .mode-card:hover { border-color: var(--green); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,230,118,0.1); }
+  .mode-card:active { transform: scale(0.98); }
 
-#next-btn {
-  height: 40px;
-  padding: 0 18px;
-  border-radius: 20px;
-  background: var(--s3);
-  border: 1px solid var(--border2);
-  color: var(--muted);
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 18px;
-  letter-spacing: .05em;
-  flex-shrink: 0;
-  transition: all .2s;
-  white-space: nowrap;
-}
-#next-btn.ready {
-  background: var(--acc);
-  border-color: var(--acc);
-  color: #0d0d0d;
-}
-#next-btn.done-pulse {
-  background: var(--acc);
-  border-color: var(--acc);
-  color: #0d0d0d;
-  animation: btn-pulse 1.4s ease infinite;
-}
-@keyframes btn-pulse {
-  0%,100%{box-shadow:0 0 0 0 rgba(212,255,62,.5)}
-  50%{box-shadow:0 0 0 8px rgba(212,255,62,0)}
-}
-#next-btn:disabled { opacity: .28; pointer-events: none; }
-#next-btn:active { transform: scale(.95); }
+  .mode-icon { font-size: 28px; margin-bottom: 8px; display: block; }
+  .mode-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 1px; color: #fff; margin-bottom: 4px; }
+  .mode-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .mode-badge {
+    position: absolute;
+    top: 14px; right: 14px;
+    background: var(--green-dim);
+    border: 1px solid var(--green);
+    color: var(--green);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
 
-/* axis strip */
-#axes {
-  padding: 0 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-shrink: 0;
-  margin-bottom: 4px;
-}
-.ax {
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--muted2);
-  letter-spacing: .05em;
-  text-transform: uppercase;
-}
+  /* ── SURVEY ── */
+  #survey { padding: 20px 20px 40px; }
 
-/* grid area */
-#grid-area {
-  flex: 1;
-  min-height: 0;
-  padding: 0 14px;
-  display: flex;
-  gap: 8px;
-}
-#yaxis {
-  width: 26px;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 6px 0;
-}
-.ylbl {
-  font-size: 9px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .05em;
-  color: var(--muted2);
-  text-align: right;
-}
-#canvas-wrap {
-  flex: 1;
-  position: relative;
-  border-radius: var(--rs);
-  border: 1px solid var(--border2);
-  overflow: hidden;
-}
-#grid-canvas {
-  display: block;
-  width: 100%; height: 100%;
-  cursor: crosshair;
-  touch-action: none;
-}
-.qlbl {
-  position: absolute;
-  font-size: 9px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  color: rgba(255,255,255,.08);
-  pointer-events: none;
-  line-height: 1.3;
-}
+  .survey-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-top: 12px;
+  }
 
-/* team strip */
-#strip-wrap {
-  flex-shrink: 0;
-  padding: 8px 0 max(env(safe-area-inset-bottom), 12px);
-}
-#strip {
-  display: flex;
-  gap: 10px;
-  padding: 0 14px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-}
-#strip::-webkit-scrollbar { display: none; }
-.s-team {
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  cursor: pointer;
-  position: relative;
-}
-.s-logo {
-  width: 38px; height: 38px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 11px;
-  letter-spacing: .04em;
-  border: 2px solid transparent;
-  transition: all .18s cubic-bezier(.175,.885,.32,1.275);
-  position: relative;
-}
-.s-logo.cur { border-color: var(--acc); transform: scale(1.18); }
-.s-logo.ok::after {
-  content: '✓';
-  position: absolute;
-  bottom: -3px; right: -3px;
-  width: 14px; height: 14px;
-  background: var(--acc);
-  color: #000;
-  border-radius: 50%;
-  font-size: 8px;
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  display: flex; align-items: center; justify-content: center;
-  border: 1.5px solid var(--bg);
-}
-.s-abbr { font-size: 9px; color: var(--muted2); font-weight: 600; text-transform: uppercase; }
+  .back-btn {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    cursor: pointer;
+    font-size: 18px;
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .back-btn:hover { border-color: var(--green); }
 
-/* ══════════════════════════════════════════════
-   RESULTS
-══════════════════════════════════════════════ */
-#results {
-  background: var(--bg);
-  overflow: hidden;
-}
+  .progress-info {
+    flex: 1;
+  }
+  .progress-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .progress-track {
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .progress-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), var(--gold));
+    border-radius: 10px;
+    transition: width 0.4s cubic-bezier(.4,0,.2,1);
+    width: 0%;
+  }
 
-#res-header {
-  padding: max(env(safe-area-inset-top), 20px) 16px 12px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-}
-.res-titles { flex: 1; }
-.res-eyebrow {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--acc);
-  margin-bottom: 4px;
-}
-#res-name {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 42px;
-  line-height: .9;
-  color: var(--text);
-}
-#res-name span { color: var(--acc); }
-.res-sub { font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .team-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 24px;
+    padding: 32px 24px 28px;
+    text-align: center;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+    animation: slideUp 0.3s cubic-bezier(.4,0,.2,1);
+  }
 
-#edit-btn {
-  height: 36px;
-  padding: 0 14px;
-  border-radius: 18px;
-  background: var(--s2);
-  border: 1px solid var(--border2);
-  color: var(--text);
-  font-size: 13px;
-  font-weight: 600;
-  flex-shrink: 0;
-  margin-top: 4px;
-}
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-#res-canvas-wrap {
-  padding: 0 14px;
-  flex-shrink: 0;
-  position: relative;
-}
-#res-canvas {
-  display: block;
-  width: 100%;
-  border-radius: var(--rs);
-  border: 1px solid var(--border2);
-}
-.res-ax-x {
-  display: flex;
-  justify-content: space-between;
-  padding: 5px 2px;
-  font-size: 9px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .05em;
-  color: var(--muted2);
-}
-.res-ax-y {
-  position: absolute;
-  right: calc(14px + 4px);
-  top: 50%;
-  transform: translateY(-50%) rotate(90deg);
-  transform-origin: center;
-  font-size: 9px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .05em;
-  color: var(--muted2);
-  white-space: nowrap;
-  pointer-events: none;
-}
+  .team-division {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 20px;
+  }
 
-#share-btn {
-  margin: 8px 14px 10px;
-  height: 50px;
-  background: var(--acc);
-  color: #0d0d0d;
-  border: none;
-  border-radius: var(--rs);
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 22px;
-  letter-spacing: .07em;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: transform .12s, background .15s;
-}
-#share-btn:active { transform: scale(.97); background: var(--acc2); }
+  .team-logo-wrap {
+    width: 100px; height: 100px;
+    margin: 0 auto 20px;
+    position: relative;
+  }
 
-#quad-list {
-  flex: 1;
-  overflow-y: auto;
-  padding: 0 14px max(env(safe-area-inset-bottom), 20px);
-  -webkit-overflow-scrolling: touch;
-}
-.q-section { margin-bottom: 18px; }
-.q-head {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  color: var(--muted);
-  padding: 10px 0 8px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 10px;
-}
-.q-chips { display: flex; flex-wrap: wrap; gap: 7px; }
-.chip {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  background: var(--s2);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  padding: 5px 11px 5px 5px;
-  transition: border-color .15s;
-}
-.chip:active { border-color: var(--border2); }
-.c-logo {
-  width: 22px; height: 22px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 8px;
-}
-.c-name { font-size: 12px; font-weight: 600; color: var(--text); }
+  .team-logo {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 20px rgba(255,255,255,0.1));
+  }
 
-/* ── UTILS ── */
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: none; }
-}
-.fade-up { animation: fade-up .3s cubic-bezier(.4,0,.2,1) both; }
+  .team-logo-fallback {
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface2);
+    border-radius: 50%;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+    color: var(--muted);
+  }
+
+  .team-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .team-abbr {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* ── RATING SECTIONS ── */
+  .rating-section {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    margin-bottom: 14px;
+  }
+
+  .rating-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .rating-label span { color: var(--text); }
+
+  /* ── SLIDER ── */
+  .slider-wrap { position: relative; }
+
+  .slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 10px;
+    background: var(--surface2);
+    outline: none;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--green);
+    cursor: pointer;
+    box-shadow: 0 0 0 4px var(--green-dim), 0 4px 12px rgba(0,230,118,0.4);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+
+  .slider::-webkit-slider-thumb:active {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 8px var(--green-dim), 0 4px 20px rgba(0,230,118,0.5);
+  }
+
+  .slider::-moz-range-thumb {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--green);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 0 0 4px var(--green-dim);
+  }
+
+  .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .slider-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    text-align: center;
+    color: var(--green);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  /* ── SICKO GRID ── */
+  .sicko-container { position: relative; }
+
+  .axis-label-y {
+    position: absolute;
+    left: -8px; top: 50%;
+    transform: translateX(-100%) translateY(-50%) rotate(-90deg);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+    transform-origin: center;
+  }
+
+  .axis-label-x {
+    text-align: center;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+
+  .sicko-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 4px;
+    padding: 0 2px;
+  }
+
+  .grid-cell {
+    aspect-ratio: 1;
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 8px;
+    font-weight: 700;
+    color: var(--muted);
+    transition: all 0.15s ease;
+    position: relative;
+    overflow: hidden;
+    background: var(--surface2);
+  }
+
+  .grid-cell:hover, .grid-cell:active {
+    border-color: var(--green);
+    background: var(--green-dim);
+    color: var(--green);
+    transform: scale(0.95);
+  }
+
+  .grid-cell .cell-emoji { font-size: 16px; line-height: 1; }
+
+  .grid-cell.selected {
+    background: var(--green-dim) !important;
+    border-color: var(--green) !important;
+    color: var(--green) !important;
+    box-shadow: 0 0 12px rgba(0,230,118,0.25);
+    transform: scale(0.9);
+  }
+
+  /* ── NEXT BUTTON ── */
+  .next-btn {
+    width: 100%;
+    background: var(--green);
+    color: #000;
+    border: none;
+    border-radius: 16px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    padding: 18px 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .next-btn.ready {
+    opacity: 1;
+    pointer-events: all;
+    box-shadow: 0 8px 32px rgba(0,230,118,0.3);
+  }
+
+  .next-btn.ready:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,230,118,0.4); }
+  .next-btn.ready:active { transform: scale(0.98); }
+
+  /* ── DONE SCREEN ── */
+  #done {
+    justify-content: center;
+    align-items: center;
+    padding: 40px 24px;
+    text-align: center;
+  }
+
+  .done-icon { font-size: 72px; margin-bottom: 24px; animation: bounce 0.6s ease; }
+  @keyframes bounce { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
+
+  .done-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, #fff, var(--green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+
+  .done-sub {
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 40px;
+  }
+
+  .done-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    width: 100%;
+    max-width: 340px;
+    margin-bottom: 32px;
+  }
+
+  .stat-box {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 16px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--green);
+  }
+
+  .done-status {
+    width: 100%;
+    max-width: 340px;
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    margin-bottom: 24px;
+    text-align: left;
+    border: 1.5px solid var(--border);
+  }
+
+  .done-status.submitting {
+    background: rgba(0,230,118,0.06);
+    border-color: var(--green);
+    color: var(--muted);
+  }
+
+  .done-status.success {
+    background: rgba(0,230,118,0.08);
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  .done-status.error {
+    background: rgba(255,71,87,0.08);
+    border-color: var(--red);
+    color: var(--red);
+  }
+
+  .restart-btn {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 16px 32px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .restart-btn:hover { border-color: var(--green); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 32px; left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 22px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+    transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+    white-space: nowrap;
+    max-width: calc(100vw - 40px);
+    text-align: center;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.green { border-color: var(--green); color: var(--green); }
+
+  /* ── RESPONSIVE TWEAKS ── */
+  @media (max-width: 380px) {
+    .team-name { font-size: 38px; }
+    .grid-cell .cell-emoji { font-size: 14px; }
+  }
+
+  @media (min-width: 600px) {
+    #survey { max-width: 480px; margin: 0 auto; padding-top: 32px; }
+    #home .mode-cards { max-width: 420px; }
+    .sicko-grid { gap: 10px; }
+  }
 </style>
 </head>
 <body>
 
-<!-- ══ SPLASH ══ -->
-<div class="screen" id="splash">
-  <div class="splash-inner" style="position:relative;z-index:2;margin-top:auto;padding-bottom:0">
-    <span class="splash-eyebrow">🏈 2025 Season</span>
-    <h1 class="splash-title">NFL<br><em>Takes</em></h1>
-    <div class="splash-stats">
-      <div class="splash-stat">
-        <span class="splash-stat-n">32</span>
-        <span class="splash-stat-l">Teams</span>
-      </div>
-      <div class="splash-divider"></div>
-      <div class="splash-stat">
-        <span class="splash-stat-n">2</span>
-        <span class="splash-stat-l">Axes</span>
-      </div>
-      <div class="splash-divider"></div>
-      <div class="splash-stat">
-        <span class="splash-stat-n">∞</span>
-        <span class="splash-stat-l">Takes</span>
-      </div>
-    </div>
-    <p class="splash-sub">Place each team on the grid — how good are they, and do you even like them?</p>
-  </div>
-  <div class="splash-form" style="padding:0 28px;position:relative;z-index:2">
-    <input id="name-input" type="text" placeholder="Your name" maxlength="24" autocomplete="off" autocorrect="off" spellcheck="false">
-    <button id="start-btn" onclick="startSurvey()">
-      Drop Your Takes →
-    </button>
-  </div>
-  <div style="height:max(env(safe-area-inset-bottom),40px);position:relative;z-index:2"></div>
-</div>
+<div id="progress-bar"><div id="progress-fill"></div></div>
+<div class="toast" id="toast"></div>
 
-<!-- ══ SURVEY ══ -->
-<div class="screen hidden" id="survey">
-  <!-- top bar -->
-  <div id="topbar">
-    <button id="back-btn" onclick="navBack()" aria-label="Previous team">‹</button>
-    <div class="prog-wrap">
-      <div class="prog-meta">
-        <span class="prog-label" id="prog-label">0 of 32 placed</span>
-        <span class="prog-frac" id="prog-frac">0/32</span>
-      </div>
-      <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
-    </div>
+<!-- ══════════════ HOME ══════════════ -->
+<div class="screen active" id="home">
+  <div class="home-glow"></div>
+  <div class="home-logo">NFL<br>TAKES</div>
+  <div class="home-sub">2026 Season Preview</div>
+  <p class="home-desc">Rate all 32 teams on quality &amp; how much you rock with them. Takes ~5 minutes.</p>
+
+  <div class="name-input-wrap">
+    <label for="nameField">Your Name</label>
+    <input class="name-input" id="nameField" type="text" placeholder="e.g. Big Mike" maxlength="40" autocomplete="off">
   </div>
 
-  <!-- team card -->
-  <div id="team-card">
-    <div id="tlogo"></div>
-    <div class="tinfo">
-      <div class="tname" id="tname"></div>
-      <div class="tconf" id="tconf"></div>
-      <div class="tstatus pending" id="tstatus">Tap the grid to place</div>
+  <div class="mode-cards">
+    <div class="mode-card" onclick="startMode('casual')">
+      <span class="mode-icon">🏈</span>
+      <div class="mode-title">Casual Mode</div>
+      <div class="mode-desc">Rate each team separately on Quality and Likeability with a simple slider. Easiest.</div>
+      <div class="mode-badge">Recommended</div>
     </div>
-    <button id="next-btn" onclick="navNext()" disabled>NEXT</button>
-  </div>
-
-  <!-- x-axis labels -->
-  <div id="axes">
-    <span class="ax">😤 Hate</span>
-    <span class="ax" style="color:var(--muted2);font-size:9px">← how much you like them →</span>
-    <span class="ax">Love 😍</span>
-  </div>
-
-  <!-- grid -->
-  <div id="grid-area">
-    <div id="yaxis">
-      <span class="ylbl">Elite</span>
-      <span class="ylbl">Good</span>
-      <span class="ylbl">Mid</span>
-      <span class="ylbl">Bad</span>
-      <span class="ylbl">Trash</span>
+    <div class="mode-card" onclick="startMode('advanced')">
+      <span class="mode-icon">🧠</span>
+      <div class="mode-title">Advanced Mode</div>
+      <div class="mode-desc">Place each team on a 5×5 Quality vs. Likeability grid — both axes in one tap. For the true heads.</div>
     </div>
-    <div id="canvas-wrap">
-      <canvas id="grid-canvas"></canvas>
-      <span class="qlbl" style="top:7px;left:7px">Great &amp; Loved</span>
-      <span class="qlbl" style="top:7px;right:7px;text-align:right">Great &amp; Hated</span>
-      <span class="qlbl" style="bottom:7px;left:7px">Trash &amp; Loved</span>
-      <span class="qlbl" style="bottom:7px;right:7px;text-align:right">Trash &amp; Hated</span>
-    </div>
-  </div>
-
-  <!-- team strip -->
-  <div id="strip-wrap">
-    <div id="strip"></div>
   </div>
 </div>
 
-<!-- ══ RESULTS ══ -->
-<div class="screen hidden" id="results">
-  <div id="res-header">
-    <div class="res-titles">
-      <div class="res-eyebrow">Your NFL Map</div>
-      <div id="res-name">YOUR<br><span>MAP</span></div>
-      <div class="res-sub" id="res-sub"></div>
+<!-- ══════════════ SURVEY ══════════════ -->
+<div class="screen" id="survey">
+
+  <!-- Inline back confirm -->
+  <div id="backConfirm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:center;justify-content:center;padding:24px;">
+    <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:24px;padding:32px 24px;max-width:320px;width:100%;text-align:center;">
+      <div style="font-size:32px;margin-bottom:12px;">⚠️</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;margin-bottom:8px;">Ditch your takes?</div>
+      <div style="font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.5;">You've rated <span id="confirmCount">0</span> teams so far. Going back loses all progress.</div>
+      <div style="display:flex;gap:12px;">
+        <button onclick="cancelBack()" style="flex:1;background:var(--surface2);border:1.5px solid var(--border);border-radius:14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;padding:14px;cursor:pointer;">Keep Going</button>
+        <button onclick="confirmBack()" style="flex:1;background:var(--red);border:none;border-radius:14px;color:#fff;font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;padding:14px;cursor:pointer;">Go Back</button>
+      </div>
     </div>
-    <button id="edit-btn" onclick="goEdit()">✏ Edit</button>
   </div>
 
-  <div id="res-canvas-wrap">
-    <canvas id="res-canvas"></canvas>
-    <div class="res-ax-x">
-      <span>😤 Hate</span>
-      <span>Love 😍</span>
+  <div class="survey-header">
+    <button class="back-btn" onclick="prevTeam()" id="prevBtn" title="Previous team">←</button>
+    <div class="progress-info">
+      <div class="progress-label" id="progressLabel">Team 1 of 32</div>
+      <div class="progress-track"><div class="progress-inner" id="progressInner"></div></div>
     </div>
-    <div class="res-ax-y">← Quality →</div>
+    <button onclick="goHome()" style="background:none;border:none;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;padding:4px 8px;border-radius:8px;" title="Quit survey">✕ Quit</button>
   </div>
 
-  <button id="share-btn" onclick="doShare(this)">Share My Takes 🔗</button>
+  <!-- Team Card -->
+  <div class="team-card" id="teamCard">
+    <div class="team-division" id="teamDivision"></div>
+    <div class="team-logo-wrap">
+      <img class="team-logo" id="teamLogo" alt="" onerror="this.style.display='none';document.getElementById('teamLogoFallback').style.display='flex'">
+      <div class="team-logo-fallback" id="teamLogoFallback" style="display:none"></div>
+    </div>
+    <div class="team-name" id="teamName"></div>
+    <div class="team-abbr" id="teamAbbr"></div>
+  </div>
 
-  <div id="quad-list"></div>
+  <!-- CASUAL MODE RATINGS -->
+  <div id="casualRatings">
+    <div class="rating-section">
+      <div class="rating-label">⚡ Quality — <span id="qualLabel">how good are they?</span></div>
+      <div class="slider-value" id="qualValue">—</div>
+      <div class="slider-wrap">
+        <input class="slider" id="qualSlider" type="range" min="1" max="10" step="1" value="5"
+          oninput="onSlider('qual',this.value)">
+      </div>
+      <div class="slider-labels">
+        <span>Dumpster 🗑️</span>
+        <span>🐐 Elite</span>
+      </div>
+    </div>
+
+    <div class="rating-section">
+      <div class="rating-label">❤️ Likeability — <span id="likeLabel">do you fw them?</span></div>
+      <div class="slider-value" id="likeValue">—</div>
+      <div class="slider-wrap">
+        <input class="slider" id="likeSlider" type="range" min="1" max="10" step="1" value="5"
+          oninput="onSlider('like',this.value)">
+      </div>
+      <div class="slider-labels">
+        <span>They're dead to me 💀</span>
+        <span>Ride or die 🙌</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SICKO MODE GRID -->
+  <div id="sickoRatings" style="display:none">
+    <div class="rating-section">
+      <div class="rating-label">Tap to place this team</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);flex-shrink:0;">Quality ↑</div>
+        <div style="flex:1">
+          <div class="sicko-grid" id="sickoGrid"></div>
+        </div>
+      </div>
+      <div class="axis-label-x">Likeability →</div>
+    </div>
+  </div>
+
+  <button class="next-btn" id="nextBtn" onclick="saveAndNext()">NEXT TEAM →</button>
+</div>
+
+<!-- ══════════════ DONE ══════════════ -->
+<div class="screen" id="done">
+  <div class="done-icon">🏆</div>
+  <div class="done-title">Takes Locked In</div>
+  <div class="done-sub" id="doneSubtitle">All 32 teams rated</div>
+
+  <div class="done-stats">
+    <div class="stat-box">
+      <div class="stat-label">Top Pick</div>
+      <div class="stat-value" id="statTopPick" style="font-size:22px;line-height:1.2">—</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Most Hated</div>
+      <div class="stat-value" id="statMostHated" style="font-size:22px;line-height:1.2;color:var(--red)">—</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Avg Quality</div>
+      <div class="stat-value" id="statAvgQ">—</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Avg Like</div>
+      <div class="stat-value" id="statAvgL">—</div>
+    </div>
+  </div>
+
+  <div class="done-status submitting" id="submitStatus">
+    ⏳ Submitting your takes to the group sheet…
+  </div>
+
+  <button class="restart-btn" onclick="restart()">← Start Over</button>
 </div>
 
 <script>
-/* ── DATA ── */
-const TEAMS = [
-  {name:"49ers",    city:"San Francisco", conf:"NFC West",  bg:"#AA0000",fg:"#FFFDD0",abbr:"SF"},
-  {name:"Bears",    city:"Chicago",       conf:"NFC North", bg:"#0B162A",fg:"#C83803",abbr:"CHI"},
-  {name:"Bengals",  city:"Cincinnati",    conf:"AFC North", bg:"#FB4F14",fg:"#000",   abbr:"CIN"},
-  {name:"Bills",    city:"Buffalo",       conf:"AFC East",  bg:"#00338D",fg:"#C60C30",abbr:"BUF"},
-  {name:"Broncos",  city:"Denver",        conf:"AFC West",  bg:"#FB4F14",fg:"#002244",abbr:"DEN"},
-  {name:"Browns",   city:"Cleveland",     conf:"AFC North", bg:"#311D00",fg:"#FF3C00",abbr:"CLE"},
-  {name:"Bucs",     city:"Tampa Bay",     conf:"NFC South", bg:"#D50A0A",fg:"#FF7900",abbr:"TB"},
-  {name:"Cardinals",city:"Arizona",       conf:"NFC West",  bg:"#97233F",fg:"#FFB612",abbr:"ARI"},
-  {name:"Chargers", city:"Los Angeles",   conf:"AFC West",  bg:"#0080C6",fg:"#FFC20E",abbr:"LAC"},
-  {name:"Chiefs",   city:"Kansas City",   conf:"AFC West",  bg:"#E31837",fg:"#FFB81C",abbr:"KC"},
-  {name:"Colts",    city:"Indianapolis",  conf:"AFC South", bg:"#002C5F",fg:"#A2AAAD",abbr:"IND"},
-  {name:"Cowboys",  city:"Dallas",        conf:"NFC East",  bg:"#003594",fg:"#869397",abbr:"DAL"},
-  {name:"Dolphins", city:"Miami",         conf:"AFC East",  bg:"#008E97",fg:"#FC4C02",abbr:"MIA"},
-  {name:"Eagles",   city:"Philadelphia",  conf:"NFC East",  bg:"#004C54",fg:"#A5ACAF",abbr:"PHI"},
-  {name:"Falcons",  city:"Atlanta",       conf:"NFC South", bg:"#A71930",fg:"#ddd",   abbr:"ATL"},
-  {name:"Giants",   city:"New York",      conf:"NFC East",  bg:"#0B2265",fg:"#A71930",abbr:"NYG"},
-  {name:"Jaguars",  city:"Jacksonville",  conf:"AFC South", bg:"#006778",fg:"#9F792C",abbr:"JAX"},
-  {name:"Jets",     city:"New York",      conf:"AFC East",  bg:"#125740",fg:"#fff",   abbr:"NYJ"},
-  {name:"Lions",    city:"Detroit",       conf:"NFC North", bg:"#0076B6",fg:"#B0B7BC",abbr:"DET"},
-  {name:"Packers",  city:"Green Bay",     conf:"NFC North", bg:"#203731",fg:"#FFB612",abbr:"GB"},
-  {name:"Panthers", city:"Carolina",      conf:"NFC South", bg:"#0085CA",fg:"#101820",abbr:"CAR"},
-  {name:"Patriots", city:"New England",   conf:"AFC East",  bg:"#002244",fg:"#C60C30",abbr:"NE"},
-  {name:"Raiders",  city:"Las Vegas",     conf:"AFC West",  bg:"#1a1a1a",fg:"#A5ACAF",abbr:"LV"},
-  {name:"Rams",     city:"Los Angeles",   conf:"NFC West",  bg:"#003594",fg:"#FFA300",abbr:"LAR"},
-  {name:"Ravens",   city:"Baltimore",     conf:"AFC North", bg:"#241773",fg:"#9E7C0C",abbr:"BAL"},
-  {name:"Saints",   city:"New Orleans",   conf:"NFC South", bg:"#101820",fg:"#D3BC8D",abbr:"NO"},
-  {name:"Seahawks", city:"Seattle",       conf:"NFC West",  bg:"#002244",fg:"#69BE28",abbr:"SEA"},
-  {name:"Steelers", city:"Pittsburgh",    conf:"AFC North", bg:"#101820",fg:"#FFB612",abbr:"PIT"},
-  {name:"Texans",   city:"Houston",       conf:"AFC South", bg:"#03202F",fg:"#E31837",abbr:"HOU"},
-  {name:"Titans",   city:"Tennessee",     conf:"AFC South", bg:"#0C2340",fg:"#4B92DB",abbr:"TEN"},
-  {name:"Vikings",  city:"Minnesota",     conf:"NFC North", bg:"#4F2683",fg:"#FFC62F",abbr:"MIN"},
-  {name:"Commanders",city:"Washington",   conf:"NFC East",  bg:"#5A1414",fg:"#FFB612",abbr:"WAS"},
-];
+// ──────────────────────────────────────────────
+// CONFIG — replace with your Apps Script URL
+// ──────────────────────────────────────────────
+const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
 
-/* ── PASTE YOUR GOOGLE APPS SCRIPT URL HERE ── */
-const SHEET_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+// ──────────────────────────────────────────────
+// DATA
+// ──────────────────────────────────────────────
+const DIVISIONS = {
+  'AFC East':  [['BUF','Bills'],['MIA','Dolphins'],['NYJ','Jets'],['NE','Patriots']],
+  'AFC North': [['BAL','Ravens'],['CIN','Bengals'],['CLE','Browns'],['PIT','Steelers']],
+  'AFC South': [['HOU','Texans'],['IND','Colts'],['JAX','Jaguars'],['TEN','Titans']],
+  'AFC West':  [['KC','Chiefs'],['DEN','Broncos'],['LV','Raiders'],['LAC','Chargers']],
+  'NFC East':  [['PHI','Eagles'],['DAL','Cowboys'],['NYG','Giants'],['WAS','Commanders']],
+  'NFC North': [['DET','Lions'],['GB','Packers'],['CHI','Bears'],['MIN','Vikings']],
+  'NFC South': [['TB','Buccaneers'],['ATL','Falcons'],['NO','Saints'],['CAR','Panthers']],
+  'NFC West':  [['SF','49ers'],['LAR','Rams'],['SEA','Seahawks'],['ARI','Cardinals']]
+};
 
-/* ── STATE ── */
-let placements = new Array(32).fill(null);
-let currentIdx = 0;
-let userName   = '';
-let dragIdx    = -1;
+const QUAL_LABELS = ['','Dumpster Fire 🗑️','Bad','Below Average','Mediocre','Average','Decent','Contender','Legit Good','Elite','Super Bowl Bound 🐐'];
+const LIKE_LABELS = ['','Dead to Me ☠️','Can\'t Stand \'Em','Nah','Indifferent','Whatever','I fw them','Solid','Like \'Em A Lot','Almost Ride or Die','Ride or Die 🙌'];
 
-/* ── CANVAS ── */
-const canvas = document.getElementById('grid-canvas');
-const ctx    = canvas.getContext('2d');
+// ──────────────────────────────────────────────
+// STATE
+// ──────────────────────────────────────────────
+let mode = 'casual';
+let teams = [];
+let idx = 0;
+let results = [];
+let submitterName = '';
+let qualVal = null;
+let likeVal = null;
+let sickoSelected = null; // {q, l}
+let qualTouched = false;
+let likeTouched = false;
 
-function TR() { return Math.max(10, Math.round(canvas.width * 0.026)); }
-
-function resizeCanvas() {
-  const wrap = document.getElementById('canvas-wrap');
-  canvas.width  = wrap.offsetWidth;
-  canvas.height = wrap.offsetHeight || Math.round(wrap.offsetWidth * 0.82);
-  drawGrid();
-}
-
-function drawGrid() {
-  const W = canvas.width, H = canvas.height;
-  ctx.clearRect(0,0,W,H);
-
-  /* background */
-  ctx.fillStyle = '#161616';
-  ctx.fillRect(0,0,W,H);
-
-  /* quad tints */
-  const tints = [
-    [0,   0,   'rgba(212,255,62,0.04)'],
-    [W/2, 0,   'rgba(255,69,69,0.04)'],
-    [0,   H/2, 'rgba(74,158,255,0.04)'],
-    [W/2, H/2, 'rgba(150,80,255,0.03)'],
-  ];
-  tints.forEach(([x,y,c]) => { ctx.fillStyle=c; ctx.fillRect(x,y,W/2,H/2); });
-
-  /* sub-grid */
-  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
-  ctx.lineWidth = .5;
-  [.25,.5,.75].forEach(f => {
-    ctx.beginPath(); ctx.moveTo(f*W,0); ctx.lineTo(f*W,H); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(0,f*H); ctx.lineTo(W,f*H); ctx.stroke();
-  });
-
-  /* main axes */
-  ctx.strokeStyle = 'rgba(255,255,255,0.14)';
-  ctx.lineWidth = 1;
-  ctx.setLineDash([4,4]);
-  ctx.beginPath(); ctx.moveTo(W/2,0); ctx.lineTo(W/2,H); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(0,H/2); ctx.lineTo(W,H/2); ctx.stroke();
-  ctx.setLineDash([]);
-
-  /* tokens — inactive first, then active on top */
-  placements.forEach((p,i) => { if(p && i!==currentIdx && i!==dragIdx) drawToken(p.x*W,p.y*H,TEAMS[i],false,false); });
-  if(dragIdx>=0 && placements[dragIdx]) { const p=placements[dragIdx]; drawToken(p.x*W,p.y*H,TEAMS[dragIdx],dragIdx===currentIdx,true); }
-  if(dragIdx!==currentIdx && placements[currentIdx]) { const p=placements[currentIdx]; drawToken(p.x*W,p.y*H,TEAMS[currentIdx],true,false); }
-}
-
-function drawToken(px, py, team, isActive, isDragging) {
-  const r = TR();
-  ctx.save();
-  if (isActive) {
-    ctx.strokeStyle = '#d4ff3e';
-    ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.arc(px,py,r+4,0,Math.PI*2); ctx.stroke();
+// ──────────────────────────────────────────────
+// INIT
+// ──────────────────────────────────────────────
+function buildTeamList() {
+  teams = [];
+  for (const [div, arr] of Object.entries(DIVISIONS)) {
+    for (const [abbr, name] of arr) {
+      teams.push({ division: div, abbr, name });
+    }
   }
-  if (isDragging) {
-    ctx.globalAlpha = .8;
-    ctx.strokeStyle = 'rgba(255,255,255,.5)';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath(); ctx.arc(px,py,r+7,0,Math.PI*2); ctx.stroke();
-    ctx.globalAlpha = 1;
+  // Shuffle for variety
+  for (let i = teams.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [teams[i], teams[j]] = [teams[j], teams[i]];
   }
-  /* shadow for depth */
-  ctx.shadowColor = 'rgba(0,0,0,0.6)';
-  ctx.shadowBlur  = isActive ? 12 : 6;
-  ctx.shadowOffsetY = 2;
-  ctx.beginPath(); ctx.arc(px,py,r,0,Math.PI*2);
-  ctx.fillStyle = team.bg; ctx.fill();
-  ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
-
-  const fs = Math.max(9, Math.round(r * 0.58));
-  ctx.font = `700 ${fs}px 'Bebas Neue', sans-serif`;
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillStyle = team.fg;
-  ctx.fillText(team.abbr, px, py+1);
-  ctx.restore();
 }
 
-/* ── EVENTS ── */
-function evPos(e) {
-  const rect = canvas.getBoundingClientRect();
-  const sx = canvas.width/rect.width, sy = canvas.height/rect.height;
-  const src = e.touches ? e.touches[0] : e;
-  return {
-    x: Math.max(.02, Math.min(.98, (src.clientX-rect.left)*sx/canvas.width)),
-    y: Math.max(.02, Math.min(.98, (src.clientY-rect.top )*sy/canvas.height)),
+function buildSickoGrid() {
+  const grid = document.getElementById('sickoGrid');
+  grid.innerHTML = '';
+  for (let q = 10; q >= 1; q--) {
+    for (let l = 1; l <= 10; l++) {
+      const cell = document.createElement('div');
+      cell.className = 'grid-cell';
+      cell.dataset.q = q;
+      cell.dataset.l = l;
+      // Color-code zones: top-right=gold, bottom-left=red, diagonal=green tint
+      if (q >= 8 && l >= 8) cell.style.borderColor = 'rgba(255,211,42,0.25)';
+      else if (q <= 3 && l <= 3) cell.style.borderColor = 'rgba(255,71,87,0.2)';
+      cell.title = `Quality: ${q}, Like: ${l}`;
+      cell.onclick = () => selectSickoCell(q, l, cell);
+      grid.appendChild(cell);
+    }
+  }
+}
+
+// ──────────────────────────────────────────────
+// SCREENS
+// ──────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function startMode(m) {
+  const name = document.getElementById('nameField').value.trim();
+  if (!name) {
+    showToast('Enter your name first 👆', false);
+    document.getElementById('nameField').focus();
+    return;
+  }
+  submitterName = name;
+  mode = m;
+  buildTeamList();
+  idx = 0;
+  results = [];
+
+  if (m === 'advanced') buildSickoGrid();
+
+  document.getElementById('casualRatings').style.display = m === 'casual' ? 'block' : 'none';
+  document.getElementById('sickoRatings').style.display = m === 'advanced' ? 'block' : 'none';
+
+  resetInputs();
+  renderTeam();
+  showScreen('survey');
+}
+
+function prevTeam() {
+  if (idx === 0) return;
+  idx--;
+  renderTeam(results[idx]);
+}
+
+function goHome() {
+  if (results.length > 0) {
+    document.getElementById('confirmCount').textContent = results.filter(Boolean).length;
+    const overlay = document.getElementById('backConfirm');
+    overlay.style.display = 'flex';
+  } else {
+    showScreen('home');
+  }
+}
+
+function cancelBack() {
+  document.getElementById('backConfirm').style.display = 'none';
+}
+
+function confirmBack() {
+  document.getElementById('backConfirm').style.display = 'none';
+  showScreen('home');
+}
+
+function restart() {
+  showScreen('home');
+}
+
+// ──────────────────────────────────────────────
+// RENDER TEAM
+// ──────────────────────────────────────────────
+function renderTeam(prefill = null) {
+  const t = teams[idx];
+  const pct = Math.round((idx / teams.length) * 100);
+
+  // Update progress
+  document.getElementById('progressLabel').textContent = `Team ${idx + 1} of ${teams.length}`;
+  document.getElementById('progressInner').style.width = pct + '%';
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  // Prev button — dim on first team
+  const prevBtn = document.getElementById('prevBtn');
+  prevBtn.style.opacity = idx === 0 ? '0.3' : '1';
+  prevBtn.style.pointerEvents = idx === 0 ? 'none' : 'all';
+
+  // Team info
+  document.getElementById('teamDivision').textContent = t.division;
+  document.getElementById('teamName').textContent = t.name;
+  document.getElementById('teamAbbr').textContent = t.abbr;
+
+  // Logo
+  const logoEl = document.getElementById('teamLogo');
+  const fallbackEl = document.getElementById('teamLogoFallback');
+  logoEl.style.display = 'block';
+  fallbackEl.style.display = 'none';
+  fallbackEl.textContent = t.abbr;
+  logoEl.src = `logos/${t.abbr}.svg`;
+
+  // Reset card animation
+  const card = document.getElementById('teamCard');
+  card.style.animation = 'none';
+  card.offsetHeight;
+  card.style.animation = '';
+
+  if (prefill) {
+    restoreInputs(prefill);
+  } else {
+    resetInputs();
+  }
+}
+
+function resetInputs() {
+  qualVal = null;
+  likeVal = null;
+  qualTouched = false;
+  likeTouched = false;
+  sickoSelected = null;
+
+  // Reset sliders visually (don't set value so user must interact)
+  document.getElementById("qualSlider").value = 5;
+  document.getElementById("likeSlider").value = 5;
+  document.getElementById('qualValue').textContent = '—';
+  document.getElementById('likeValue').textContent = '—';
+  document.getElementById('qualLabel').textContent = 'how good are they?';
+  document.getElementById('likeLabel').textContent = 'do you fw them?';
+
+  // Deselect grid cells
+  document.querySelectorAll('.grid-cell').forEach(c => c.classList.remove('selected'));
+
+  updateNextBtn();
+}
+
+function restoreInputs(prev) {
+  qualVal = prev.quality;
+  likeVal = prev.likeability;
+  qualTouched = true;
+  likeTouched = true;
+  sickoSelected = null;
+
+  if (mode === 'casual') {
+    document.getElementById('qualSlider').value = prev.quality;
+    document.getElementById('likeSlider').value = prev.likeability;
+    document.getElementById('qualValue').textContent = prev.quality;
+    document.getElementById('likeValue').textContent = prev.likeability;
+    document.getElementById('qualLabel').textContent = QUAL_LABELS[prev.quality] || '';
+    document.getElementById('likeLabel').textContent = LIKE_LABELS[prev.likeability] || '';
+  } else {
+    // Re-select the matching grid cell
+    document.querySelectorAll('.grid-cell').forEach(c => {
+      c.classList.remove('selected');
+      if (parseInt(c.dataset.q) === prev.quality && parseInt(c.dataset.l) === prev.likeability) {
+        c.classList.add('selected');
+        sickoSelected = { q: prev.quality, l: prev.likeability };
+      }
+    });
+  }
+
+  updateNextBtn();
+}
+
+
+function onSlider(type, val) {
+  val = parseInt(val);
+  if (type === 'qual') {
+    qualVal = val;
+    qualTouched = true;
+    document.getElementById('qualValue').textContent = val;
+    document.getElementById('qualLabel').textContent = QUAL_LABELS[val] || '';
+  } else {
+    likeVal = val;
+    likeTouched = true;
+    document.getElementById('likeValue').textContent = val;
+    document.getElementById('likeLabel').textContent = LIKE_LABELS[val] || '';
+  }
+  updateNextBtn();
+}
+
+function selectSickoCell(q, l, cell) {
+  document.querySelectorAll('.grid-cell').forEach(c => c.classList.remove('selected'));
+  cell.classList.add('selected');
+  sickoSelected = { q, l };
+  updateNextBtn();
+}
+
+function updateNextBtn() {
+  const btn = document.getElementById('nextBtn');
+  let ready = false;
+  if (mode === 'casual') ready = (qualTouched && likeTouched);
+  if (mode === 'advanced') ready = !!sickoSelected;
+  btn.classList.toggle('ready', ready);
+}
+
+// ──────────────────────────────────────────────
+// SAVE + ADVANCE
+// ──────────────────────────────────────────────
+function saveAndNext() {
+  const t = teams[idx];
+  let q, l;
+
+  if (mode === 'casual') {
+    if (!qualTouched || !likeTouched) { showToast('Rate both sliders first!', false); return; }
+    q = qualVal;
+    l = likeVal;
+  } else {
+    if (!sickoSelected) { showToast('Tap a grid cell first!', false); return; }
+    q = sickoSelected.q;
+    l = sickoSelected.l;
+  }
+
+  results[idx] = {
+    submitter: submitterName,
+    mode,
+    division: t.division,
+    abbr: t.abbr,
+    team: t.name,
+    quality: q,
+    likeability: l,
+    timestamp: new Date().toISOString()
   };
-}
-function hitTest(pos) {
-  const W=canvas.width, H=canvas.height, r=TR()/W*2.4;
-  for(let i=placements.length-1;i>=0;i--) {
-    const p=placements[i]; if(!p) continue;
-    const dx=pos.x-p.x, dy=(pos.y-p.y)*(W/H);
-    if(Math.sqrt(dx*dx+dy*dy)<r) return i;
+
+  idx++;
+
+  if (idx >= teams.length) {
+    finishSurvey();
+    return;
   }
-  return -1;
+
+  // Milestone toasts
+  if (idx === 8) showToast('Quarter done! 🏈 Keep it rolling', true);
+  if (idx === 16) showToast('Halftime! You\'re crushing it 💪', true);
+  if (idx === 24) showToast('Home stretch — 8 left! 🔥', true);
+
+  // If we've already rated this team (going forward over a back-tracked team), restore it
+  renderTeam(results[idx] || null);
 }
 
-canvas.addEventListener('mousedown', e=>{
-  const pos=evPos(e), hit=hitTest(pos);
-  if(hit>=0){ dragIdx=hit; currentIdx=hit; refreshCard(); refreshStrip(); }
-  else place(pos);
-});
-canvas.addEventListener('mousemove', e=>{
-  if(dragIdx<0) return;
-  placements[dragIdx]=evPos(e); drawGrid();
-});
-canvas.addEventListener('mouseup', e=>{
-  if(dragIdx<0) return;
-  placements[dragIdx]=evPos(e); dragIdx=-1;
-  drawGrid(); refreshProgress(); refreshCard(); refreshStrip();
-});
-canvas.addEventListener('mouseleave', ()=>{ dragIdx=-1; });
+// ──────────────────────────────────────────────
+// FINISH
+// ──────────────────────────────────────────────
+function finishSurvey() {
+  // Filter out any sparse slots (shouldn't happen, but safety net)
+  results = results.filter(Boolean);
 
-canvas.addEventListener('touchstart', e=>{ e.preventDefault();
-  const pos=evPos(e), hit=hitTest(pos);
-  if(hit>=0){ dragIdx=hit; currentIdx=hit; refreshCard(); refreshStrip(); }
-  else place(pos);
-},{passive:false});
-canvas.addEventListener('touchmove', e=>{ e.preventDefault();
-  if(dragIdx<0) return; placements[dragIdx]=evPos(e); drawGrid();
-},{passive:false});
-canvas.addEventListener('touchend', e=>{ e.preventDefault();
-  dragIdx=-1; drawGrid(); refreshProgress(); refreshCard(); refreshStrip();
-},{passive:false});
+  // Update top bar
+  document.getElementById('progress-fill').style.width = '100%';
 
-function place(pos) {
-  const wasNew = !placements[currentIdx];
-  placements[currentIdx] = pos;
-  drawGrid(); refreshProgress(); refreshCard(); refreshStrip();
-  if(wasNew) {
-    const el = document.getElementById('tlogo');
-    el.classList.remove('just-placed','placed-ring');
-    void el.offsetWidth;
-    el.classList.add('just-placed','placed-ring');
-    setTimeout(()=>el.classList.remove('placed-ring'),600);
+  // Compute stats
+  const topTeam = [...results].sort((a,b) => (b.quality+b.likeability)-(a.quality+a.likeability))[0];
+  const worstTeam = [...results].sort((a,b) => (a.likeability)-(b.likeability))[0];
+  const avgQ = (results.reduce((s,r)=>s+r.quality,0)/results.length).toFixed(1);
+  const avgL = (results.reduce((s,r)=>s+r.likeability,0)/results.length).toFixed(1);
+
+  document.getElementById('statTopPick').textContent = topTeam?.team || '—';
+  document.getElementById('statMostHated').textContent = worstTeam?.team || '—';
+  document.getElementById('statAvgQ').textContent = avgQ;
+  document.getElementById('statAvgL').textContent = avgL;
+  document.getElementById('doneSubtitle').textContent = `${submitterName}'s 32 teams rated`;
+
+  // Save locally
+  try { localStorage.setItem('nflTakes_' + submitterName, JSON.stringify(results)); } catch(e) {}
+
+  showScreen('done');
+  submitToSheets();
+}
+
+// ──────────────────────────────────────────────
+// GOOGLE SHEETS SUBMIT
+// ──────────────────────────────────────────────
+async function submitToSheets() {
+  const statusEl = document.getElementById('submitStatus');
+
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+    statusEl.className = 'done-status error';
+    statusEl.textContent = '⚠️ No Google Sheets URL configured yet — see README.md for setup steps.';
+    return;
   }
-}
 
-/* ── UI ── */
-function startSurvey() {
-  userName = document.getElementById('name-input').value.trim() || 'You';
-  show('survey');
-  setTimeout(()=>{ resizeCanvas(); refreshCard(); refreshStrip(); refreshProgress(); },10);
-}
+  try {
+    statusEl.className = 'done-status submitting';
+    statusEl.textContent = '⏳ Submitting your takes to the group sheet…';
 
-function show(id) {
-  ['splash','survey','results'].forEach(s=>{
-    const el=document.getElementById(s);
-    el.classList.toggle('hidden', s!==id);
-  });
-}
+    const payload = {
+      submitter: submitterName,
+      mode,
+      submitted_at: new Date().toISOString(),
+      results: results.map(r => ({
+        team: r.team,
+        abbr: r.abbr,
+        division: r.division,
+        quality: r.quality,
+        likeability: r.likeability
+      }))
+    };
 
-function refreshCard() {
-  const t = TEAMS[currentIdx];
-  const el = document.getElementById('tlogo');
-  el.style.background = t.bg;
-  el.style.color = t.fg;
-  el.textContent = t.abbr;
-
-  document.getElementById('tname').textContent = t.city+' '+t.name;
-  document.getElementById('tconf').textContent = t.conf;
-
-  const placed = !!placements[currentIdx];
-  const st = document.getElementById('tstatus');
-  st.textContent = placed ? '✓ Placed — tap grid to move' : 'Tap the grid to place';
-  st.className = 'tstatus '+(placed?'placed':'pending');
-
-  const btn = document.getElementById('next-btn');
-  const total = placements.filter(Boolean).length;
-  btn.disabled = false;
-  if(total===32) {
-    btn.textContent='DONE ✓'; btn.className='done-pulse';
-  } else if(placed) {
-    btn.textContent='NEXT →'; btn.className='ready';
-  } else {
-    btn.textContent='NEXT →'; btn.className=''; btn.disabled=true;
-  }
-}
-
-function refreshProgress() {
-  const n = placements.filter(Boolean).length;
-  document.getElementById('prog-fill').style.width=(n/32*100)+'%';
-  document.getElementById('prog-label').textContent=`${n} of 32 placed`;
-  document.getElementById('prog-frac').textContent=`${n}/32`;
-  refreshCard();
-}
-
-function refreshStrip() {
-  const strip = document.getElementById('strip');
-  strip.innerHTML='';
-  TEAMS.forEach((t,i)=>{
-    const wrap=document.createElement('div'); wrap.className='s-team';
-    wrap.onclick=()=>{ currentIdx=i; refreshCard(); refreshStrip(); drawGrid(); };
-    const logo=document.createElement('div');
-    logo.className='s-logo'+(i===currentIdx?' cur':'')+(placements[i]?' ok':'');
-    logo.style.background=t.bg; logo.style.color=t.fg; logo.textContent=t.abbr;
-    const lbl=document.createElement('span'); lbl.className='s-abbr'; lbl.textContent=t.abbr;
-    wrap.append(logo,lbl); strip.appendChild(wrap);
-  });
-  const active=strip.querySelectorAll('.s-team')[currentIdx];
-  if(active) active.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});
-}
-
-function navNext() {
-  if(placements.filter(Boolean).length===32){ showResults(); return; }
-  let next = placements.findIndex((p,i)=>!p && i>currentIdx);
-  if(next<0) next = placements.findIndex(p=>!p);
-  if(next>=0){ currentIdx=next; refreshCard(); refreshStrip(); drawGrid(); }
-}
-function navBack() {
-  if(currentIdx>0){ currentIdx--; refreshCard(); refreshStrip(); drawGrid(); }
-}
-
-/* ── RESULTS ── */
-function showResults() {
-  show('results');
-  document.getElementById('res-name').innerHTML=
-    `${userName.toUpperCase()}'S<br><span>MAP</span>`;
-  document.getElementById('res-sub').textContent=
-    `All 32 teams placed · ${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'})}`;
-  drawResCanvas();
-  buildQuadList();
-  submitToSheet();
-}
-
-function drawResCanvas() {
-  const rc=document.getElementById('res-canvas');
-  const wrap=document.getElementById('res-canvas-wrap');
-  rc.width=wrap.offsetWidth;
-  rc.height=Math.round(rc.width*.75);
-  const W=rc.width, H=rc.height;
-  const rx=rc.getContext('2d');
-
-  rx.fillStyle='#161616'; rx.fillRect(0,0,W,H);
-  const tints=[
-    [0,0,'rgba(212,255,62,0.05)'],[W/2,0,'rgba(255,69,69,0.05)'],
-    [0,H/2,'rgba(74,158,255,0.05)'],[W/2,H/2,'rgba(150,80,255,0.04)'],
-  ];
-  tints.forEach(([x,y,c])=>{ rx.fillStyle=c; rx.fillRect(x,y,W/2,H/2); });
-
-  rx.strokeStyle='rgba(255,255,255,0.05)'; rx.lineWidth=.5;
-  [.25,.75].forEach(f=>{
-    rx.beginPath();rx.moveTo(f*W,0);rx.lineTo(f*W,H);rx.stroke();
-    rx.beginPath();rx.moveTo(0,f*H);rx.lineTo(W,f*H);rx.stroke();
-  });
-  rx.strokeStyle='rgba(255,255,255,0.16)'; rx.lineWidth=1; rx.setLineDash([3,3]);
-  rx.beginPath();rx.moveTo(W/2,0);rx.lineTo(W/2,H);rx.stroke();
-  rx.beginPath();rx.moveTo(0,H/2);rx.lineTo(W,H/2);rx.stroke();
-  rx.setLineDash([]);
-
-  /* quad labels */
-  rx.fillStyle='rgba(255,255,255,.13)'; rx.font='bold 9px sans-serif';
-  rx.textAlign='left';  rx.textBaseline='top';    rx.fillText('GREAT & LOVED',7,7);
-  rx.textAlign='right'; rx.fillText('GREAT & HATED',W-7,7);
-  rx.textAlign='left';  rx.textBaseline='bottom'; rx.fillText('TRASH & LOVED',7,H-7);
-  rx.textAlign='right'; rx.fillText('TRASH & HATED',W-7,H-7);
-
-  const r=Math.max(9,Math.round(W*.022));
-  placements.forEach((p,i)=>{
-    if(!p) return;
-    const t=TEAMS[i];
-    rx.save();
-    rx.shadowColor='rgba(0,0,0,.5)'; rx.shadowBlur=5; rx.shadowOffsetY=1;
-    rx.beginPath(); rx.arc(p.x*W,p.y*H,r,0,Math.PI*2);
-    rx.fillStyle=t.bg; rx.fill();
-    rx.shadowBlur=0; rx.shadowOffsetY=0;
-    const fs=Math.max(7,Math.round(r*.58));
-    rx.font=`700 ${fs}px 'Bebas Neue',sans-serif`;
-    rx.textAlign='center'; rx.textBaseline='middle';
-    rx.fillStyle=t.fg; rx.fillText(t.abbr,p.x*W,p.y*H+.5);
-    rx.restore();
-  });
-}
-
-function buildQuadList() {
-  const ql=document.getElementById('quad-list');
-  const secs=[
-    {label:'⭐ Great & Loved — your elite favorites', f:p=>p.x>.5&&p.y<.5},
-    {label:'💀 Great & Hated — good but you hate \'em', f:p=>p.x<=.5&&p.y<.5},
-    {label:'🫶 Trash & Loved — your dumpster fire darlings', f:p=>p.x>.5&&p.y>=.5},
-    {label:'🗑 Trash & Hated — irrelevant and unlikeable', f:p=>p.x<=.5&&p.y>=.5},
-  ];
-  ql.innerHTML='';
-  secs.forEach((s,si)=>{
-    const ts=TEAMS.filter((_,i)=>placements[i]&&s.f(placements[i]));
-    if(!ts.length) return;
-    const sec=document.createElement('div');
-    sec.className='q-section fade-up';
-    sec.style.animationDelay=`${si*60}ms`;
-    const h=document.createElement('div'); h.className='q-head'; h.textContent=s.label;
-    const chips=document.createElement('div'); chips.className='q-chips';
-    ts.forEach(t=>{
-      const chip=document.createElement('div'); chip.className='chip';
-      const logo=document.createElement('div'); logo.className='c-logo';
-      logo.style.background=t.bg; logo.style.color=t.fg; logo.textContent=t.abbr;
-      const name=document.createElement('div'); name.className='c-name'; name.textContent=t.city+' '+t.name;
-      chip.append(logo,name); chips.appendChild(chip);
+    // Apps Script requires no-cors for simple POST from GitHub Pages
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
-    sec.append(h,chips); ql.appendChild(sec);
-  });
-}
 
-function goEdit() {
-  show('survey');
-  setTimeout(()=>{ resizeCanvas(); drawGrid(); },10);
-}
+    // With no-cors we can't read the response, so optimistically show success
+    statusEl.className = 'done-status success';
+    statusEl.textContent = '✅ Takes submitted! Check the group sheet to see how you rank.';
+    showToast('Submitted to Google Sheets! 🏆', true);
 
-/* ── GOOGLE SHEETS ── */
-function submitToSheet() {
-  if(!SHEET_URL||SHEET_URL==='YOUR_APPS_SCRIPT_URL_HERE') return;
-  const row={name:userName, timestamp:new Date().toISOString()};
-  TEAMS.forEach((t,i)=>{
-    const p=placements[i];
-    row[t.abbr+'_like']    = p ? Math.round(p.x*100) : '';
-    row[t.abbr+'_quality'] = p ? Math.round((1-p.y)*100) : '';
-  });
-  fetch(SHEET_URL,{
-    method:'POST', mode:'no-cors',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(row)
-  }).catch(()=>{});
-}
-
-/* ── SHARE ── */
-function doShare(btn) {
-  const lines=TEAMS.map((t,i)=>{
-    const p=placements[i]; if(!p) return null;
-    const lk=p.x>.66?'love':p.x>.33?'neutral on':'hate';
-    const ql=p.y<.33?'elite':p.y<.66?'mid':'trash';
-    return `${t.city} ${t.name}: ${ql}, ${lk}`;
-  }).filter(Boolean).join('\n');
-  const text=`${userName}'s NFL Takes 🏈\n\n${lines}`;
-  if(navigator.share){
-    navigator.share({title:'My NFL Takes',text}).catch(()=>{});
-  } else {
-    navigator.clipboard.writeText(text).then(()=>{
-      const orig=btn.textContent;
-      btn.textContent='Copied! ✓';
-      setTimeout(()=>btn.textContent=orig,2000);
-    });
+  } catch (err) {
+    statusEl.className = 'done-status error';
+    statusEl.textContent = '❌ Couldn\'t reach the sheet — check your connection. Your results are saved locally.';
   }
 }
 
-window.addEventListener('resize',()=>{
-  if(!document.getElementById('survey').classList.contains('hidden')) resizeCanvas();
-});
-
-/* focus name input on load */
-setTimeout(()=>document.getElementById('name-input').focus(),400);
+// ──────────────────────────────────────────────
+// TOAST
+// ──────────────────────────────────────────────
+function showToast(msg, good = true) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (good ? ' green' : '') + ' show';
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
 </script>
 </body>
 </html>
