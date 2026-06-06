@@ -645,7 +645,7 @@
 // ──────────────────────────────────────────────
 // CONFIG — replace with your Apps Script URL
 // ──────────────────────────────────────────────
-const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyVUcnKYK4z6ruy2WxokIkfHEW42GTILS2fvfeb1Hgd1cELEdmroRDRI9aCn2pOlWk/exec';
 
 // ──────────────────────────────────────────────
 // TEAM COLORS - Updated with high-contrast variants for dark-mode
@@ -940,7 +940,7 @@ function finishSurvey() {
 async function submitToSheets() {
   const statusEl = document.getElementById('submitStatus');
 
-  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbyVUcnKYK4z6ruy2WxokIkfHEW42GTILS2fvfeb1Hgd1cELEdmroRDRI9aCn2pOlWk/exec') {
+  if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
     statusEl.className = 'done-status error';
     statusEl.textContent = '⚠️ No Google Sheets URL configured yet — see README.md for setup steps.';
     return;
